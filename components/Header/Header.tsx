@@ -5,7 +5,9 @@ import {
   rem,
   Container,
   Avatar,
+  Button,
 } from '@mantine/core';
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -63,7 +65,7 @@ const links: HeaderSearchProps[] = [
 
 const Header = () => {
   const { classes } = useStyles();
-
+  const router = useRouter();
   const items = links.map((link) => (
     <a
       key={link.label}
@@ -81,7 +83,26 @@ const Header = () => {
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
-        <Avatar radius="xl" style={{ position: 'absolute', right: 'calc(100rem - 86.5rem)' }} />
+        <Group style={{ position: 'absolute', right: 'calc(100rem - 86.5rem)' }}>
+          <Button
+            variant="filled"
+            size="sm"
+            radius="xl"
+            color="green"
+            onClick={() => router.push('/login')}
+          >
+            Login
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            radius="xl"
+            color="green"
+            onClick={() => router.push('/register')}
+          >
+            Register
+          </Button>
+        </Group>
       </Container>
     </MantineHeader>
   );
