@@ -7,7 +7,9 @@ import {
   Avatar,
   Button,
 } from '@mantine/core';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useLocalStorage } from '@mantine/hooks';
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -50,7 +52,7 @@ const links: HeaderSearchProps[] = [
     label: 'Home',
   },
   {
-    link: '/',
+    link: '/store',
     label: 'Store',
   },
   {
@@ -66,15 +68,12 @@ const links: HeaderSearchProps[] = [
 const Header = () => {
   const { classes } = useStyles();
   const router = useRouter();
+  const [loggedIn] = useLocalStorage({ key: 'isLoggedIn' });
+
   const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      onClick={(event) => event.preventDefault()}
-    >
+    <Link key={link.label} href={link.link} className={classes.link}>
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (
@@ -84,24 +83,38 @@ const Header = () => {
           {items}
         </Group>
         <Group style={{ position: 'absolute', right: 'calc(100rem - 86.5rem)' }}>
-          <Button
-            variant="filled"
-            size="sm"
-            radius="xl"
-            color="green"
-            onClick={() => router.push('/login')}
-          >
-            Login
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            radius="xl"
-            color="green"
-            onClick={() => router.push('/register')}
-          >
-            Register
-          </Button>
+          {loggedIn ? (
+            <Button
+              variant="filled"
+              size="sm"
+              radius="xl"
+              color="green"
+              onClick={() => router.push('/cart')}
+            >
+              View Cart
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="filled"
+                size="sm"
+                radius="xl"
+                color="green"
+                onClick={() => router.push('/login')}
+              >
+                Login
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                radius="xl"
+                color="green"
+                onClick={() => router.push('/register')}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </Group>
       </Container>
     </MantineHeader>

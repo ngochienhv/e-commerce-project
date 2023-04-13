@@ -1,3 +1,4 @@
+import CartContext from '@/context/CartContext';
 import { Card, Image, Text, Group, Badge, createStyles, Center, Button, rem } from '@mantine/core';
 import {
   IconGasStation,
@@ -6,6 +7,8 @@ import {
   IconShoppingCart,
   IconUsers,
 } from '@tabler/icons-react';
+import { useContext, useEffect } from 'react';
+import { notifications } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -48,8 +51,17 @@ const mockdata = [
   { label: 'Electric', icon: IconGasStation },
 ];
 
-const ProductCard = () => {
+export interface ProductProps {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+}
+
+const ProductCard = (props: ProductProps) => {
+  const { id, name, price, image } = props;
   const { classes } = useStyles();
+  const [products, setProducts] = useContext(CartContext);
   const features = mockdata.map((feature) => (
     <Center key={feature.label}>
       <feature.icon size="1.05rem" className={classes.icon} stroke={1.5} />
@@ -57,19 +69,25 @@ const ProductCard = () => {
     </Center>
   ));
 
+  const onClickAddToCart = () => {
+    notifications.show({
+      title: 'Success',
+      message: 'Your product has been added to the cart!',
+      color: 'green',
+    });
+    setProducts((o) => [...o, props]);
+  };
+
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Image
-          src="https://www.figma.com/file/kCuUX6w9XzNlkh5SXbhzt6/image/195e5daffaf0400705c7099a665d13ce28672a6e?fuid=1030106477255539578"
-          alt="blackberry"
-        />
+        <Image src={image} alt="blackberry" height={300} fit="contain" />
       </Card.Section>
 
       <Group position="apart" mt="md">
         <div>
           <Text fw={500} size="md">
-            Black Berry
+            {name}
           </Text>
           <Text fz="xs" c="dimmed" mt={5}>
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
@@ -81,14 +99,20 @@ const ProductCard = () => {
         <Group spacing={30}>
           <div>
             <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
-              $168.00
+              ${price}
             </Text>
             <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
               per kilogram
             </Text>
           </div>
 
-          <Button radius="xl" style={{ flex: 1 }} leftIcon={<IconShoppingCart />} color="green">
+          <Button
+            radius="xl"
+            style={{ flex: 1 }}
+            leftIcon={<IconShoppingCart />}
+            color="green"
+            onClick={onClickAddToCart}
+          >
             Add to cart
           </Button>
         </Group>

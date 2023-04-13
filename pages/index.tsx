@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { AppShell, Title, Container, SimpleGrid, Center, Space } from '@mantine/core';
 import Header from '@/components/Header/Header';
 import FooterCentered from '@/components/Footer/Footer';
@@ -9,7 +9,7 @@ import FeatureSection from '@/components/FeatureSection/FeatureSection';
 import ProductCard from '@/components/Card/Card';
 import ogImage from '../public/assets/hero.png';
 const inter = Inter({ subsets: ['latin'] });
-
+import data from '../data';
 export default function Home() {
   return (
     <>
@@ -37,8 +37,8 @@ export default function Home() {
         </Center>
         <Space h="md" />
         <SimpleGrid cols={3}>
-          {[1, 2, 3].map((v) => (
-            <ProductCard key={v} />
+          {data.slice(0, 3).map((item) => (
+            <ProductCard key={item.id} {...item} />
           ))}
         </SimpleGrid>
         <Space h="md" />

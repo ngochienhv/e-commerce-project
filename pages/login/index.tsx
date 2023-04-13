@@ -14,6 +14,9 @@ import {
   Image,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
+import { useLocalStorage } from '@mantine/hooks';
+import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
   form: {
@@ -30,9 +33,29 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+const USERNAME = 'abc@gmail.com';
+const PASSWORD = '12345678';
+
 const Authentication = () => {
   const { classes } = useStyles();
   const router = useRouter();
+  const [loggedIn, setLoggedIn] = useLocalStorage({ key: 'isLoggedIn', defaultValue: false });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const checkLogin = () => {
+    if (username === USERNAME && password === PASSWORD) {
+      setLoggedIn(true);
+      router.push('/');
+    } else {
+      notifications.show({
+        title: 'Login Error',
+        message: 'Please check your username and password and try again!',
+        color: 'red',
+      });
+    }
+  };
+
   return (
     <Grid>
       <Grid.Col span={6}>
@@ -44,10 +67,24 @@ const Authentication = () => {
             <Text color="dimmed" size="lg" align="center" mb={50}>
               Please enter your details below
             </Text>
-            <TextInput label="Email address" placeholder="hello@gmail.com" size="md" />
-            <PasswordInput label="Password" placeholder="Your password" mt="md" size="md" />
+            <TextInput
+              label="Email address"
+              placeholder="hello@gmail.com"
+              size="md"
+              value={username}
+              onChange={(event) => setUsername(event.currentTarget.value)}
+            />
+            <PasswordInput
+              label="Password"
+              placeholder="Your password"
+              mt="md"
+              size="md"
+              value={password}
+              onChange={(event) => setPassword(event.currentTarget.value)}
+            />
             <Checkbox label="Remember me" mt="xl" size="md" />
-            <Button fullWidth mt="xl" size="md" color="green" onClick={() => router.push('/')}>
+
+            <Button fullWidth mt="xl" size="md" color="green" onClick={checkLogin}>
               Login
             </Button>
 

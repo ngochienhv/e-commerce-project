@@ -10,7 +10,8 @@ import {
   Center,
   Group,
 } from '@mantine/core';
-import heroHeader from '../../public/assets/hero.png';
+import heroHeader from '@/public/assets/hero.png';
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -72,6 +73,7 @@ const useStyles = createStyles((theme) => ({
 
 const HeroHeader = () => {
   const { classes } = useStyles();
+  const router = useRouter();
 
   return (
     <Paper className={classes.container}>
@@ -91,6 +93,7 @@ const HeroHeader = () => {
                 className={classes.control}
                 color="green"
                 p={12}
+                onClick={() => router.push('/store')}
               >
                 Browse Store
               </Button>

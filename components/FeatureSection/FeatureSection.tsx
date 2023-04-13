@@ -9,9 +9,10 @@ import {
   rem,
   Group,
   Container,
+  Image,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import ProductCard from '../Card/Card';
+import blackberry from '@/public/assets/black-berries.png';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -65,7 +66,7 @@ const FeatureSection = () => {
         </Col>
         <Col span={1}></Col>
         <Col span={5}>
-          <ProductCard />
+          <Image src={blackberry.src} alt="blackberry" height={300} />
         </Col>
       </Grid>
     </Container>
